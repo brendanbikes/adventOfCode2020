@@ -1,5 +1,10 @@
 from itertools import groupby
 import sys
+import numpy as np
+import scipy.linalg as la
+
+
+np.set_printoptions(suppress=True, linewidth=np.nan, threshold=np.nan)
 
 def readInput():
 	with open('day10input.txt', 'r') as f:
@@ -8,6 +13,8 @@ def readInput():
 
 
 def part1(data):
+
+	print(data)
 
 	differences = []
 	differences.append(data[0])
@@ -27,16 +34,14 @@ def part1(data):
 
 
 
-def recur(data, currentPath=None, joltage=0, allowedJumps=[1,2,3]):
-	allPaths=[]
+def recur(data, pathCount=0, currentPath=None, joltage=0, allowedJumps=[1,2,3]):
 
 	if currentPath is None:
 		currentPath=[]
-
 	currentPath.append(joltage)
 
 	nextAdapters=[]
-	possible = [joltage + x for x in allowedJumps]
+	possible = [currentPath[-1] + x for x in allowedJumps]
 
 	for x in possible:
 		if x in data:
@@ -44,16 +49,40 @@ def recur(data, currentPath=None, joltage=0, allowedJumps=[1,2,3]):
 
 	if nextAdapters:
 		for nextAdapter in nextAdapters:
-			allPaths.extend(recur(data, currentPath[:], nextAdapter))
+			pathCount = recur(data, pathCount, currentPath[:], nextAdapter)
 	else:
 		#we've reached a terminal node
-		allPaths.append(currentPath)
-	return allPaths
+		pathCount+=1
+	return pathCount
+
+
+def matrix(data, allowedJumps=[1,2,3]):
+	#treat numbers as variables
+	matrix = np.zeros((len(data)+1, len(data)+1))
+
+	indexes = range(0,len(data)+1)
+	#aadd in the 0 node
+	data = [0] + data
+	for number in data:
+		for jump in allowedJumps:
+			if number+jump in data:
+				matrix[data.index(number), data.index(number+jump)] = 1
+
+	pathCount=0
+	for i in range(0,len(data)):
+		#count the number of paths of length i between the start and end points
+		product = np.linalg.matrix_power(matrix, i+1)
+		pathCount += product[0,indexes[-1]] #must reach the node for largest adapter -- the built-in adapter is an automatic +3 jolts beyond this, and can't be reached from any other node
+
+	return pathCount
 
 def part2(data):
-	paths = recur(data)
-	#print(paths)
-	print(len(paths))
+
+	#pathCountRecur = recur(data)
+	#print(pathCountRecur)
+
+	pathCountMatrix=matrix(data)
+	print(int(pathCountMatrix))
 
 if __name__ == "__main__":
 	data = readInput()
