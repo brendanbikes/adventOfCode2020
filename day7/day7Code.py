@@ -68,7 +68,7 @@ def explodeRulesPart1(rules):
 	print(len(bagsWithShinyGold))
 
 
-def expandBagList(color, rules, terminalColors):
+def expandBagList(color, rules, count=0):
 	#get list of expanded colors
 	#add list of expanded colors to list
 	#if the list is not a subset of terminal colors, call function recursisvely
@@ -76,15 +76,17 @@ def expandBagList(color, rules, terminalColors):
 	insideColors = [item for sublist in insideColors for item in sublist] #flatten the list
 
 	bagList = []
-	for color in insideColors:
-		if color not in terminalColors:
-			results = expandBagList(color, rules, terminalColors)
+
+	count+=1
+	if not insideColors:
+		bagList.append(color)
+	else:
+		for color in insideColors:
+			results, count = expandBagList(color, rules, count)
 			for item in results:
 				bagList.append(item)
-		else:
-			bagList.append(color)
 
-	return bagList
+	return bagList, count
 
 
 def part1():
@@ -114,16 +116,9 @@ def part2():
 
 	#explodeRulesPart2(rules)
 
-	terminalColors = [x if not bool(y) else None for x, y in rules.iteritems()]
-
-	newTerminalColors=[]
-	for x in terminalColors:
-		if x != None:
-			newTerminalColors.append(x)
-
-	bagList = expandBagList('shiny gold', rules, newTerminalColors)
-	print(bagList)
-	print(len(bagList))
+	bagList, bagCount = expandBagList('shiny gold', rules, 0)
+	#print(bagList)
+	print(bagCount-1) #don't count the outermost bag
 
 
 if __name__ == "__main__":
