@@ -11,29 +11,6 @@ def readInput():
 		data = f.read().splitlines()
 	return sorted([int(x) for x in data])
 
-
-def part1(data):
-
-	print(data)
-
-	differences = []
-	differences.append(data[0])
-
-	for i in range(1,len(data)):
-		differences.append(data[i]-data[i-1])
-
-	differences.append(3) #account for the built-in adapter
-
-	differences = sorted(differences)
-
-	print(differences)
-
-	frequencies = [len(list(group)) for key, group in groupby(differences)]
-	print(frequencies)
-	print(frequencies[0] * frequencies[1])
-
-
-
 def recur(data, pathCount=0, currentPath=None, joltage=0, allowedJumps=[1,2,3]):
 
 	if currentPath is None:
@@ -75,6 +52,27 @@ def matrix(data, allowedJumps=[1,2,3]):
 		pathCount += product[0,indexes[-1]] #must reach the node for largest adapter -- the built-in adapter is an automatic +3 jolts beyond this, and can't be reached from any other node
 
 	return pathCount
+
+def part1(data):
+
+	print(data)
+
+	differences = []
+	differences.append(data[0])
+
+	for i in range(1,len(data)):
+		differences.append(data[i]-data[i-1])
+
+	differences.append(3) #account for the built-in adapter
+
+	differences = sorted(differences)
+
+	print(differences)
+
+	frequencies = [len(list(group)) for key, group in groupby(differences)]
+	print(frequencies)
+	print(frequencies[0] * frequencies[1])
+
 
 def part2(data):
 
