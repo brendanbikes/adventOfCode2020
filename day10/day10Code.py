@@ -38,7 +38,7 @@ def matrix(data, allowedJumps=[1,2,3]):
 	matrix = np.zeros((len(data)+1, len(data)+1))
 
 	indexes = range(0,len(data)+1)
-	#aadd in the 0 node
+	#add in the 0 node
 	data = [0] + data
 	for number in data:
 		for jump in allowedJumps:
