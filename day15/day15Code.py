@@ -2,7 +2,7 @@ def part2():
 
 	initialNumbers = [0,14,1,3,7,9]
 
-	sequence = initialNumbers[:]
+	#sequence = initialNumbers[:]
 
 	t = len(initialNumbers)
 
@@ -41,7 +41,7 @@ def part2():
 			secondMostRecentIndices['{}'.format(next)] = mostRecentIndices['{}'.format(next)]
 			mostRecentIndices['{}'.format(next)] = t + 1
 
-		sequence.append(next)
+		#sequence.append(next)
 
 		#increment
 		t+=1
