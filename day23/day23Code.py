@@ -36,20 +36,15 @@ def process1(data, rounds):
 				#set z to highest value
 				z = max(data)
 
-		#print('timepoint 5')
-
 		#z is the value of the destination cup
 		#insert pickUpCups into array, split at z
 		zIndex = data.index(z)
 
-		#print('timepoint 6')
 
 		data = data[0:zIndex+1] + pickUpCups + data[zIndex+1:]
-		#print('timepoint 7')
 		#shuffle array backward by 1, so the next currentCup is still at index 0
 		data.append(data[0])
 		data = data[1:]
-		#print('timepoint 8')
 
 		k+=1
 
